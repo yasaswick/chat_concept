@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
 
+//App Colors
 class AppColors {
   AppColors._();
 
-  //Common Colors
-  static const Color primary_color_light = Color(0xff0082d6);
-  static const Color primary_color_dark = Color(0xff494949);
+  //Primary Color
+  static const Color primary_color = Color(0xFF48837F);
 
-  static const Color font_color_light = Colors.white;
-  static const Color font_color_dark = Colors.black;
+  //Text colors light
+  static const Color primary_text_color_light = Color(0xFF1B1C20);
+  static const Color secondart_text_color_light = Color(0xFF1B1C20);
 
-  //Bottom Nav
-  static const Color bottom_nav_backgrount = Color(0xFF112127);
-
-  //Gradients
-  static const LinearGradient background_gradient = LinearGradient(
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-    stops: [0, 0.8, 1],
-    colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-  );
-
-  //Text Colors
-  static const Color text_bright_white = Color(0xFFFFFFFF);
-  static const Color text_white = Color(0xFFEFEFEF);
-  static const Color text_grey = Color(0xFFACACAC);
+  //Text colors dark
+  static const Color primary_text_color_dark = Colors.white;
+  static const Color secondart_text_color_dark = Colors.white;
 }
