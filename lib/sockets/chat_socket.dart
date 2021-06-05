@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:chat_concept/bloc/chat_data_controller.dart';
-import '../constants.dart';
 
 class ChatSocket {
   //immutable chat data controller

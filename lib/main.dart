@@ -1,5 +1,5 @@
 import 'package:chat_concept/styles/app_themes.dart';
-import 'package:chat_concept/views/main_screen.dart';
+import 'package:chat_concept/views/home/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,6 +12,7 @@ void main() async {
   runApp(MainApp());
 }
 
+//Locking orietation to portrait
 Future init() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
