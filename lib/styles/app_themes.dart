@@ -32,7 +32,7 @@ class AppThemes {
             color: isDarkTheme ? Colors.white : Colors.black),
       ),
       backgroundColor: isDarkTheme ? Color(0xff9584ff) : Colors.grey[800],
-      canvasColor: Colors.grey[50],
+      canvasColor: Colors.transparent,
     );
   }
 }

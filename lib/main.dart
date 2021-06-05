@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeData(false, context),
-      home: ProfileScreen(),
+      home: MainScreen(),
     );
   }
 }
