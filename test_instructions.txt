@@ -1,0 +1,36 @@
+Developer Test
+
+Before you get started
+Thank you for taking the time to read through our developer test. You should think of this test as your catwalk. It’s not designed to throw you off but rather help you flaunt your strengths and own the stage.
+What to do
+
+This test is all about creating a small mobile application along with a simple backend to support it. We’ve listed out the functional requirements and nonfunctional requirements we’re looking for.
+
+
+Functional Requirements
+
+The basic requirement of the project is to create a simple chat room. You need to make sure you include the following:
+Users of the app should be able to login to a live chat room:
+
+- Each user should have a name and image as their profile
+- Users should be able to click on another user’s name in the chat room which allows
+them to see the user’s profile
+- Users should be able to search the chat room for previous messages
+
+ Non Functional Requirements
+
+- Usage of Flutter 2 - done
+- Use of sockets
+- Good quality code with comments
+- Git version control with history
+- Good segregation of UI, Widgets & Screen elements
+- A good UI
+- A simple search algorithm written by you
+- Use of a non-firebase backend (Can be anything and you can keep it simple. We are not
+expecting authentication etc)
+
+
+Duration of Test
+To develop the above application, spend a maximum of one week. The sooner the submission, the better.
+Complete it to the best of your ability showing off all your skills and don't hesitate to contact us for any questions.
+We look forward to your submission. Enjoy!
