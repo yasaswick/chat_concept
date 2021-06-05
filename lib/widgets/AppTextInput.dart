@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppTextInput extends StatelessWidget {
   final String? hintText;
-
-  const AppTextInput({Key? key, this.hintText}) : super(key: key);
+  final bool isMultiLine;
+  const AppTextInput({Key? key, this.hintText, this.isMultiLine = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class AppTextInput extends StatelessWidget {
       child: Row(children: [
         Expanded(
             child: TextField(
+          maxLines: isMultiLine ? 3 : 1,
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(fontSize: 14),

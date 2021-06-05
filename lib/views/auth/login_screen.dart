@@ -11,34 +11,39 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [Expanded(child: Image.asset(Assets.sign_in_image))],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 45.0),
-                child: Text(
-                  'Sign In',
-                  style: Theme.of(context).textTheme.headline1,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: Image.asset(Assets.sign_in_image))
+                  ],
                 ),
-              ),
-              AppTextInput(
-                hintText: 'Enter your email',
-              ),
-              AppTextInput(
-                hintText: 'Enter your password',
-              ),
-              AppButton(
-                text: 'SIGN IN',
-              ),
-              _buildFooterSection()
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 45.0),
+                  child: Text(
+                    'Sign In',
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ),
+                AppTextInput(
+                  hintText: 'Enter your email',
+                ),
+                AppTextInput(
+                  hintText: 'Enter your password',
+                ),
+                AppButton(
+                  text: 'SIGN IN',
+                ),
+                _buildFooterSection()
+              ],
+            ),
           ),
         ),
       ),
@@ -55,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           TextButton(
               onPressed: () {},
               child: Text(
-                'Register',
+                'SING UP',
                 style: Theme.of(context).textTheme.headline3,
               ))
         ],
