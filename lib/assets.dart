@@ -1,22 +1,21 @@
+///Assets static class
+
 class Assets {
   Assets._();
 
-  static const String bottom_nav_home_active =
-      'assets/images/home_icon_active.png';
-  static const String bottom_nav_shop_active =
-      'assets/images/shop_icon_active.png';
-  static const String bottom_nav_profile_active =
-      'assets/images/user_icon_active.png';
+  //logo
+  static const String logo = 'assets/images/logo.png';
 
-  static const String bottom_nav_home_inactive = 'assets/images/home_icon.png';
-  static const String bottom_nav_shop_inactive = 'assets/images/shop_icon.png';
-  static const String bottom_nav_profile_inactive =
-      'assets/images/user_icon.png';
+  //illustrations
+  static const String sign_in_image = 'assets/images/sign_in_image.png';
+  static const String welcome_image = 'assets/images/welcome_image.png';
+  static const String welcome_text = 'assets/images/welcome_text.png';
 
-  static const String notification_icon = 'assets/images/bell.png';
+  //icons
+  static const String chat_icon = 'assets/images/chat.png';
+  static const String moon_icon = 'assets/images/moon.png';
+  static const String sun_icon = 'assets/images/sun.png';
 
-  static const String power_source = 'assets/images/power.png';
-
-  static const String fridge = 'assets/images/refrigerator.png';
-  static const String washing_machine = 'assets/images/washing-machine.png';
+  //misc
+  static const String upload_image = 'assets/images/upload_image.png';
 }

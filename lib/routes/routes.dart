@@ -1,8 +1,8 @@
 import '../views/common/splash_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../views/auth/login_screen.dart';
 
+///App named routes
 class Routes {
   Routes._();
   static const String splash = '/splash';
