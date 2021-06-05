@@ -1,4 +1,5 @@
 import 'package:chat_concept/styles/app_themes.dart';
+import 'package:chat_concept/views/auth/welcome_screen.dart';
 import 'package:chat_concept/views/home/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +25,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: AppThemes.themeData(false, context),
-      home: MainScreen(),
+      home: WelcomeScreen(),
     );
   }
 }
