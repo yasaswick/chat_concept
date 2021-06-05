@@ -3,6 +3,7 @@ import 'package:chat_concept/views/auth/login_screen.dart';
 import 'package:chat_concept/views/auth/sign_up_screen.dart';
 import 'package:chat_concept/views/auth/welcome_screen.dart';
 import 'package:chat_concept/views/home/main_screen.dart';
+import 'package:chat_concept/views/home/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -29,7 +30,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeData(false, context),
-      home: SignUpScreen(),
+      home: ProfileScreen(),
     );
   }
 }

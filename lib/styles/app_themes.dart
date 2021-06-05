@@ -7,11 +7,11 @@ class AppThemes {
       fontFamily: 'Montserrat',
       textTheme: TextTheme(
         bodyText1: TextStyle(
-            fontSize: 15.0,
+            fontSize: 14.0,
             fontWeight: FontWeight.w400,
             color: isDarkTheme ? Colors.white : Colors.black),
         bodyText2: TextStyle(
-            fontSize: 15.0,
+            fontSize: 14.0,
             fontWeight: FontWeight.w500,
             color: isDarkTheme ? Colors.white : Colors.black),
         headline1: TextStyle(
