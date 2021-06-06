@@ -14,4 +14,12 @@ class AppColors {
   //Text colors dark
   static const Color primary_text_color_dark = Colors.white;
   static const Color secondart_text_color_dark = Colors.white;
+
+  //Gradients
+  static const LinearGradient chat_reciever_gradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0.2, 1],
+    colors: [Color(0xFF3f4c6b), Color(0xFF606c88)],
+  );
 }

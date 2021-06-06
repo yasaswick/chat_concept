@@ -1,6 +1,7 @@
 import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
+import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0,
         shadowColor: Colors.transparent,
         backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+            icon: Icon(
+              CupertinoIcons.chevron_left,
+              color: Color(0xFFC4C4C4),
+            ),
+            onPressed: () => Navigator.pop(context)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -29,12 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                        color: Colors.green, shape: BoxShape.circle),
-                  ),
+                  AppImage('https://source.unsplash.com/pJqfhKUpCh8/800x800')
                 ],
               ),
               Padding(
@@ -104,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Text(
-                  'Incase you need any help or report someone drop us a message at blah@blah.comWe would love to hear from you about your experience and suggestions.',
+                  'Incase you need any help or report someone drop us a message at blah@blah.com \n\nWe would love to hear from you about your experience and suggestions.',
                   textAlign: TextAlign.center,
                 ),
               )

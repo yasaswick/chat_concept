@@ -15,6 +15,7 @@ class Assets {
   static const String chat_icon = 'assets/images/chat.png';
   static const String moon_icon = 'assets/images/moon.png';
   static const String sun_icon = 'assets/images/sun.png';
+  static const String send_icon = 'assets/images/send.png';
 
   //misc
   static const String upload_image = 'assets/images/upload_image.png';

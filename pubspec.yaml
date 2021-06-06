@@ -27,6 +27,9 @@ dependencies:
   http: ^0.13.3
   dio: ^4.0.0
 
+  #media
+  cached_network_image: ^3.0.0
+
 
   #Time ago
   timeago: ^3.0.2
