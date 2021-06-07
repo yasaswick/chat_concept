@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chat_concept/api/authImpl.dart';
 import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../injection.dart';
 import 'profile_screen.dart';
@@ -19,6 +22,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final _globalStore = getIt<GlobalStore>();
+  final channel = WebSocketChannel.connect(
+    Uri.parse('ws://localhost:8000/ws/345345'),
+  );
+  @override
+  void dispose() {
+    channel.sink.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +54,12 @@ class _MainScreenState extends State<MainScreen> {
                     },
                     itemCount: 200,
                   )),
+                  StreamBuilder(
+                    stream: channel.stream,
+                    builder: (context, snapshot) {
+                      return Text(snapshot.hasData ? '${snapshot.data}' : '');
+                    },
+                  ),
                   _buildSendSection()
                 ],
               ),
@@ -125,7 +142,14 @@ class _MainScreenState extends State<MainScreen> {
         SizedBox(
           width: 8,
         ),
-        IconButton(onPressed: () {}, icon: Image.asset(Assets.send_icon))
+        IconButton(
+            onPressed: () async {
+              var _impl = AuthImpl();
+              _impl.login();
+
+              //channel.sink.add('{"content" : "hey"}');
+            },
+            icon: Image.asset(Assets.send_icon))
       ],
     );
   }
@@ -137,68 +161,103 @@ class _MainScreenState extends State<MainScreen> {
         builder: (builder) {
           return Wrap(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 50),
-                color: Colors.transparent,
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AppImage(
-                                'https://source.unsplash.com/pJqfhKUpCh8/800x800')
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '10',
-                                style: TextStyle(
-                                    color: AppColors.primary_color,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Image.asset(
-                                Assets.chat_icon,
-                                height: 20,
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text(
-                            'Jane Doe',
-                            style: Theme.of(context).textTheme.headline2,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Text(
-                            'Aloha, my name is jane',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text(
-                            'Joined 5m ago',
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
+              FutureBuilder(
+                  future: Future.delayed(Duration(seconds: 2)),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+                        color: Colors.transparent,
+                        child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AppImage(
+                                        'https://source.unsplash.com/pJqfhKUpCh8/800x800')
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '10',
+                                        style: TextStyle(
+                                            color: AppColors.primary_color,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Image.asset(
+                                        Assets.chat_icon,
+                                        height: 20,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    'Jane Doe',
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Text(
+                                    'Aloha, my name is jane',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    'Joined 5m ago',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ),
+                              ],
+                            )),
+                      );
+                    } else {
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+                        color: Colors.transparent,
+                        child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 40),
+                                      child: CupertinoActivityIndicator(),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
+                      );
+                    }
+                  }),
             ],
           );
         });
