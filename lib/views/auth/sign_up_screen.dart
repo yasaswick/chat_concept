@@ -75,7 +75,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: Theme.of(context).textTheme.headline4),
           ),
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text(
                 'Log In',
                 style: Theme.of(context).textTheme.headline3,

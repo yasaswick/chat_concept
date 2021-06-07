@@ -3,6 +3,8 @@ import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppTextInput.dart';
 import 'package:flutter/material.dart';
 
+import 'sign_up_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -59,9 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Text('New Here ?', style: Theme.of(context).textTheme.headline4),
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => SignUpScreen()));
+              },
               child: Text(
-                'SING UP',
+                'SIGN UP',
                 style: Theme.of(context).textTheme.headline3,
               ))
         ],

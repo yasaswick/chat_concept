@@ -1,5 +1,6 @@
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/views/auth/login_screen.dart';
+import 'package:chat_concept/views/auth/welcome_screen.dart';
 import 'package:chat_concept/views/home/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,7 +14,7 @@ class MainWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       if (_globalStore.currentUser == null) {
-        return LoginScreen();
+        return WelcomeScreen();
       } else {
         return MainScreen();
       }

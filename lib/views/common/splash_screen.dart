@@ -3,12 +3,28 @@ import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:chat_concept/res/assets.dart';
 import '../../injection.dart';
 import '../main_wrapper.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final GlobalStore _globalStore = getIt<GlobalStore>();
+
+  @override
+  void initState() {
+    super.initState();
+    getAccessToken();
+  }
+
+  Future getAccessToken() async {
+    await _globalStore.setAccessToken();
+    await navigate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +33,15 @@ class SplashScreen extends StatelessWidget {
     );
   }
 
-  Future navigate(BuildContext context) async {
-    var preferences = await SharedPreferences.getInstance();
+  Future navigate() async {
+    //Image prechache
+    await precacheImage(AssetImage(Assets.sign_in_image), context);
+    await precacheImage(AssetImage(Assets.logo), context);
+    await precacheImage(AssetImage(Assets.welcome_image), context);
+    await precacheImage(AssetImage(Assets.welcome_text), context);
 
+    //Checking if token is availible and get user from token
+    var preferences = await SharedPreferences.getInstance();
     if (preferences.getString(AppPreferences.access_token) != null) {
       var _token = preferences.getString(AppPreferences.access_token);
       if (_token != null) {

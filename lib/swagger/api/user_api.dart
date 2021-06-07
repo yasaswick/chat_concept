@@ -57,10 +57,7 @@ class UserApi {
     var headerParams = <String, String>{};
     var formParams = <String, String>{};
 
-    var contentTypes = <String>[];
-
-    var contentType =
-        contentTypes.length > 0 ? contentTypes[0] : 'application/json';
+    var contentType = 'application/json';
     var authNames = <String>['HTTPBearer'];
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,

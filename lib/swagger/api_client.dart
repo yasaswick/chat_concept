@@ -151,6 +151,10 @@ class ApiClient {
     _authentications.forEach((key, auth) {
       if (auth is OAuth) {
         auth.setAccessToken(accessToken);
+      } else {
+        if ((auth as ApiKeyAuth).paramName == 'HTTPBearer') {
+          (auth).apiKey = accessToken;
+        }
       }
     });
   }

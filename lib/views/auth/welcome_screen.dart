@@ -2,6 +2,8 @@ import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
+import 'login_screen.dart';
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -56,7 +58,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               AppButton(
                 text: 'LET\'S GET STARTED',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => LoginScreen()));
+                },
               )
             ],
           ),
