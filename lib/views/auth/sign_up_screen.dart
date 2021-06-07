@@ -4,6 +4,7 @@ import 'package:chat_concept/stores/signup_store.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppTextInput.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../injection.dart';
 
@@ -53,25 +54,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 ),
                 AppTextInput(
+                  _store.nameController,
+                  hintText: 'Enter your name',
+                  keyboard: TextInputType.name,
+                ),
+                AppTextInput(
                   _store.emailController,
                   hintText: 'Enter your email',
+                  keyboard: TextInputType.emailAddress,
                 ),
                 AppTextInput(
                   _store.passwordController,
                   hintText: 'Enter your password',
+                  isPassword: true,
+                  keyboard: TextInputType.text,
                 ),
                 AppTextInput(
                   _store.ageController,
                   hintText: 'How old are you ?',
+                  keyboard: TextInputType.number,
                 ),
                 AppTextInput(
                   _store.bioController,
                   hintText: 'Whats interesting about you ? Any Hobbies ?',
                   isMultiLine: true,
                 ),
-                AppButton(
-                  text: 'SIGN UP',
-                ),
+                Observer(builder: (_) {
+                  return AppButton(
+                    isLoading: _store.isLoading,
+                    onTap: () async {
+                      await _store.registerUser();
+                    },
+                    text: 'SIGN UP',
+                  );
+                }),
                 _buildFooterSection()
               ],
             ),

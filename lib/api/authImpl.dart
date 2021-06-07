@@ -1,3 +1,4 @@
+import 'package:chat_concept/res/constants.dart';
 import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/res/preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,10 +22,12 @@ class AuthImpl {
   }
 
   //register method
-  Future<UserViewPrivate?> register(String email, String password) async {
-    var loginCredentials = AuthDetails(email, password);
-    var result = await _api.loginUserUserLoginPost(loginCredentials);
-    print(result);
+  Future<UserViewPrivate?> register(String name, String email, String password,
+      String age, String bio) async {
+    var userDetails = UserCreate(name, email, int.parse(age), bio,
+        AppConstants.PROFILE_PLACEHOLDER, password);
+    var result = await _api.createUserUserPost(userDetails);
+
     var preferences = await SharedPreferences.getInstance();
     if (result != null) {
       await preferences.setString(
@@ -35,10 +38,8 @@ class AuthImpl {
   }
 
   //upload profile pic method
-  Future updloadProfilePic(String email, String password) async {
-    var loginCredentials = AuthDetails(email, password);
-    var result = await _api.loginUserUserLoginPost(loginCredentials);
-    print(result);
+  Future updloadProfilePic(String image) async {
+    print('');
   }
 
   //get user profile from token

@@ -52,9 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 AppTextInput(
                   _store.emailController,
                   hintText: 'Enter your email',
+                  keyboard: TextInputType.emailAddress,
                 ),
                 AppTextInput(
                   _store.passwordController,
+                  isPassword: true,
                   hintText: 'Enter your password',
                 ),
                 Observer(builder: (_) {

@@ -13,7 +13,8 @@ class UserCreate {
 
   String? password;
 
-  UserCreate();
+  UserCreate(this.name, this.email, this.age, this.bio, this.profilePhoto,
+      this.password);
 
   @override
   String toString() {

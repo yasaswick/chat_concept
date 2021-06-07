@@ -149,7 +149,6 @@ class ApiClient {
 
   void setAccessToken(String accessToken) {
     _authentications.forEach((key, auth) {
-      print(auth);
       if (auth is OAuth) {
         auth.setAccessToken(accessToken);
       } else {

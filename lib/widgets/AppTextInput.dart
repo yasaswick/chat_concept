@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 class AppTextInput extends StatelessWidget {
   final String? hintText;
   final bool isMultiLine;
+  final TextInputType keyboard;
+  final bool isPassword;
   final TextEditingController controller;
   const AppTextInput(this.controller,
-      {Key? key, this.hintText, this.isMultiLine = false})
+      {Key? key,
+      this.hintText,
+      this.isMultiLine = false,
+      this.keyboard = TextInputType.text,
+      this.isPassword = false})
       : super(key: key);
 
   @override
@@ -20,6 +26,8 @@ class AppTextInput extends StatelessWidget {
             child: TextField(
           controller: controller,
           maxLines: isMultiLine ? 3 : 1,
+          keyboardType: keyboard,
+          obscureText: isPassword,
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(fontSize: 14),

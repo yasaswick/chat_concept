@@ -51,6 +51,7 @@ abstract class _GlobalStoreBase with Store {
     return loggedInUser;
   }
 
+//set currently logged in user
   @action
   void setCurrentUser(UserViewPrivate? user) {
     print(user);
@@ -58,8 +59,9 @@ abstract class _GlobalStoreBase with Store {
     currentUser = UserView.fromUserViewPrivate(user);
   }
 
+//remove the current user and remove token
   @action
-  void removeUser() async {
+  Future removeUser() async {
     currentUser = null;
     var preferences = await SharedPreferences.getInstance();
     await preferences.setString(AppPreferences.access_token, '');

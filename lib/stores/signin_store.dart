@@ -31,8 +31,6 @@ abstract class _SignInScreenStoreBase with Store {
       await _auth
           .login(emailController.text, passwordController.text)
           .then((value) {
-        print(value);
-
         _globalStore.setCurrentUser(value);
       }).catchError((e) {});
       isLoading = false;
