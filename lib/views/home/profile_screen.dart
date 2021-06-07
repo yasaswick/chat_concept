@@ -1,10 +1,12 @@
 import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
+import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../injection.dart';
 
@@ -40,70 +42,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage('https://source.unsplash.com/pJqfhKUpCh8/800x800')
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '10',
-                      style: TextStyle(
-                          color: AppColors.primary_color,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Image.asset(
-                      Assets.chat_icon,
-                      height: 20,
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  'Jane Doe',
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  'Aloha, my name is jane',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Text(
-                  'Joined 5m ago',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Email',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Text(
-                      'jane@jane.com',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
-                ),
-              ),
+              Observer(builder: (_) {
+                if (_globalStore.currentUser != null) {
+                  return _buildUserDetailSection(_globalStore.currentUser!);
+                } else {
+                  return Container();
+                }
+              }),
               SizedBox(
                 height: 20,
               ),
@@ -125,6 +70,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildUserDetailSection(UserView user) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppImage('https://source.unsplash.com/pJqfhKUpCh8/800x800')
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                (user.chatMessages ?? 0).toString(),
+                style: TextStyle(
+                    color: AppColors.primary_color,
+                    fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Image.asset(
+                Assets.chat_icon,
+                height: 20,
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Text(
+            user.name ?? '',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Text(
+            user.bio ?? '',
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Text(
+            user.joinedDate ?? '',
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Email',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              Text(
+                user.email ?? '',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

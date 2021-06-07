@@ -33,6 +33,8 @@ dependencies:
 
   #media
   cached_network_image: ^3.0.0
+  image_picker: ^0.8.0+1
+  image_cropper: ^1.4.0
 
   #Time ago
   timeago: ^3.0.2

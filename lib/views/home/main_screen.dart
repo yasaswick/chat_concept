@@ -39,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.grey[50],
           body: SafeArea(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: Column(
                 children: [
                   _buildHeaderSection(),
