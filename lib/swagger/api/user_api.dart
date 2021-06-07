@@ -58,7 +58,7 @@ class UserApi {
     var formParams = <String, String>{};
 
     var contentType = 'application/json';
-    var authNames = <String>['HTTPBearer'];
+    var authNames = ['Authorization'];
 
     var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
         headerParams, formParams, contentType, authNames);
@@ -134,7 +134,7 @@ class UserApi {
 
     var contentType =
         contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
-    var authNames = <String>['HTTPBearer'];
+    var authNames = <String>['Authorization'];
 
     if (contentType.startsWith('multipart/form-data')) {
       var hasFields = false;

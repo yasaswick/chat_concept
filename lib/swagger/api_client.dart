@@ -18,7 +18,7 @@ class ApiClient {
   final _RegMap = RegExp(r'^Map<String,(.*)>$');
 
   ApiClient({this.basePath: '/'}) {
-    // Setup authentications (key: authentication name, value: authentication).
+    _authentications['Authorization'] = new OAuth('Authorization');
   }
 
   void addDefaultHeader(String key, String value) {
@@ -149,10 +149,11 @@ class ApiClient {
 
   void setAccessToken(String accessToken) {
     _authentications.forEach((key, auth) {
+      print(auth);
       if (auth is OAuth) {
         auth.setAccessToken(accessToken);
       } else {
-        if ((auth as ApiKeyAuth).paramName == 'HTTPBearer') {
+        if ((auth as ApiKeyAuth).paramName == 'Authorization') {
           (auth).apiKey = accessToken;
         }
       }

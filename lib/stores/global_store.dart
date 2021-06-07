@@ -59,7 +59,10 @@ abstract class _GlobalStoreBase with Store {
   }
 
   @action
-  void removeUser() {
+  void removeUser() async {
     currentUser = null;
+    var preferences = await SharedPreferences.getInstance();
+    await preferences.setString(AppPreferences.access_token, '');
+    defaultApiClient.setAccessToken('');
   }
 }
