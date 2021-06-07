@@ -142,14 +142,7 @@ class _MainScreenState extends State<MainScreen> {
         SizedBox(
           width: 8,
         ),
-        IconButton(
-            onPressed: () async {
-              var _impl = AuthImpl();
-              _impl.login();
-
-              //channel.sink.add('{"content" : "hey"}');
-            },
-            icon: Image.asset(Assets.send_icon))
+        IconButton(onPressed: () async {}, icon: Image.asset(Assets.send_icon))
       ],
     );
   }
