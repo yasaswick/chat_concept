@@ -1,4 +1,6 @@
+import 'package:chat_concept/res/preference.dart';
 import 'package:chat_concept/swagger/api.dart';
+import 'package:chat_concept/utils/sharedpref.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 part 'global_store.g.dart';
@@ -17,7 +19,17 @@ abstract class _GlobalStoreBase with Store {
   void setbottomNavBarIndex(int value) => bottomNavBarIndex = value;
 
   @action
+  Future setAccessToken() async {
+    //Set Access token to default api client
+    var currentToken =
+        await PreferenceUtils.getString(AppPreferences.access_token);
+    defaultApiClient.setAccessToken(currentToken);
+    print('access token set');
+  }
+
+  @action
   Future<UserView?> getUserFromToken() async {
+    //Get user from token
     UserView? loggedInUser;
     await auth.getProfile().then((user) {
       loggedInUser = user;
