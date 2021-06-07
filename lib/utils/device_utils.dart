@@ -13,10 +13,9 @@ class DeviceUtils {
 
   //Pick Image from gallery and returns the cropped image
   static Future<Uri?> pickFromGallery() async {
-    var pickedFile = await ImagePicker().getImage(
+    final _picker = ImagePicker();
+    var pickedFile = await _picker.getImage(
       source: ImageSource.gallery,
-      maxWidth: 1200,
-      maxHeight: 1200,
     );
 
     Uri? croppedImage;
@@ -28,7 +27,8 @@ class DeviceUtils {
 
   // Pick Image from camera and returns the cropped image
   static Future<Uri?> pickFromCamera() async {
-    var pickedFile = await ImagePicker().getImage(
+    final _picker = ImagePicker();
+    var pickedFile = await _picker.getImage(
       source: ImageSource.camera,
       maxWidth: 1200,
       maxHeight: 1200,

@@ -45,6 +45,12 @@
 <dict>
     <key>NSAllowsArbitraryLoads</key>
     <true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This is required to upload photo</string>
+		<key>NSCameraUsageDescription</key>
+	<string>This is required to capture photo</string>
+		<key>NSMicrophoneUsageDescription</key>
+	<string>This is required to capture video</string>
 </dict>
 </dict>
 </plist>

@@ -1,6 +1,7 @@
 import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/stores/signup_store.dart';
+import 'package:chat_concept/utils/device_utils.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppTextInput.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
+
+enum Options { camera, gallery }
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final SignUpScreenStore _store = SignUpScreenStore();
@@ -45,12 +48,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 30,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                        child: Image.asset(
-                      Assets.upload_image,
-                      height: 150,
-                    ))
+                    GestureDetector(
+                      onTap: () async {
+                        var image = await DeviceUtils.pickFromGallery();
+                      },
+                      child: Image.asset(
+                        Assets.upload_image,
+                        height: 150,
+                      ),
+                    ),
                   ],
                 ),
                 AppTextInput(
