@@ -1,8 +1,13 @@
 import 'package:chat_concept/res/assets.dart';
+import 'package:chat_concept/stores/global_store.dart';
+import 'package:chat_concept/stores/signin_store.dart';
+
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppTextInput.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../injection.dart';
 import 'sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +16,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final SignInScreenStore _store = SignInScreenStore();
+  final GlobalStore _globalStore = getIt<GlobalStore>();
+
+  @override
+  void dispose() {
+    _store.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,14 +50,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 AppTextInput(
+                  _store.emailController,
                   hintText: 'Enter your email',
                 ),
                 AppTextInput(
+                  _store.passwordController,
                   hintText: 'Enter your password',
                 ),
-                AppButton(
-                  text: 'SIGN IN',
-                ),
+                Observer(builder: (_) {
+                  return AppButton(
+                    isLoading: _store.isLoading,
+                    text: 'SIGN IN',
+                    onTap: () {
+                      _store.loginUser();
+                    },
+                  );
+                }),
                 _buildFooterSection()
               ],
             ),
@@ -62,8 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Text('New Here ?', style: Theme.of(context).textTheme.headline4),
           TextButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => SignUpScreen()));
+                _globalStore.setPageIndex(2);
               },
               child: Text(
                 'SIGN UP',

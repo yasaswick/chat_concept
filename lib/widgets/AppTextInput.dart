@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class AppTextInput extends StatelessWidget {
   final String? hintText;
   final bool isMultiLine;
-  const AppTextInput({Key? key, this.hintText, this.isMultiLine = false})
+  final TextEditingController controller;
+  const AppTextInput(this.controller,
+      {Key? key, this.hintText, this.isMultiLine = false})
       : super(key: key);
 
   @override
@@ -16,6 +18,7 @@ class AppTextInput extends StatelessWidget {
       child: Row(children: [
         Expanded(
             child: TextField(
+          controller: controller,
           maxLines: isMultiLine ? 3 : 1,
           decoration: InputDecoration(
               hintText: hintText,

@@ -39,6 +39,19 @@ class UserView {
     chatMessages = json['chat_messages'];
   }
 
+  UserView.fromUserViewPrivate(UserViewPrivate? user) {
+    if (user == null) return;
+    name = user.name;
+    email = user.email;
+    age = user.age;
+    bio = user.bio;
+    profilePhoto = user.profilePhoto;
+    id = user.id;
+    userUuid = user.userUuid;
+    joinedDate = user.joinedDate;
+    chatMessages = user.chatMessages;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'name': name,

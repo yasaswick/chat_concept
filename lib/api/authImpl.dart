@@ -5,10 +5,10 @@ class AuthImpl {
   final _api = UserApi();
 
   //login method
-  Future login(String email, String password) async {
+  Future<UserViewPrivate?> login(String email, String password) async {
     var loginCredentials = AuthDetails(email, password);
     var result = await _api.loginUserUserLoginPost(loginCredentials);
-    print(result);
+    return result;
   }
 
   //register method

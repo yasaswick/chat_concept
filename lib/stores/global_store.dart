@@ -1,7 +1,6 @@
 import 'package:chat_concept/api/authImpl.dart';
 import 'package:chat_concept/res/preference.dart';
 import 'package:chat_concept/swagger/api.dart';
-import 'package:chat_concept/utils/sharedpref.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +16,16 @@ abstract class _GlobalStoreBase with Store {
   int bottomNavBarIndex = 0;
 
   @observable
+  int pageIndex = 0;
+
+  @observable
   UserView? currentUser;
 
   @action
   void setbottomNavBarIndex(int value) => bottomNavBarIndex = value;
+
+  @action
+  void setPageIndex(int value) => pageIndex = value;
 
   @action
   Future setAccessToken() async {
@@ -44,5 +49,17 @@ abstract class _GlobalStoreBase with Store {
       currentUser = user;
     }).catchError((onError) {});
     return loggedInUser;
+  }
+
+  @action
+  void setCurrentUser(UserViewPrivate? user) {
+    print(user);
+    UserView();
+    currentUser = UserView.fromUserViewPrivate(user);
+  }
+
+  @action
+  void removeUser() {
+    currentUser = null;
   }
 }

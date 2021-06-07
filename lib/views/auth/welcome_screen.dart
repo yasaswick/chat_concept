@@ -1,7 +1,9 @@
 import 'package:chat_concept/res/assets.dart';
+import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:flutter/material.dart';
 
+import '../../injection.dart';
 import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -12,6 +14,9 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  //Global store
+  final GlobalStore _globalStore = getIt<GlobalStore>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +64,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               AppButton(
                 text: 'LET\'S GET STARTED',
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => LoginScreen()));
+                  _globalStore.setPageIndex(1);
                 },
               )
             ],

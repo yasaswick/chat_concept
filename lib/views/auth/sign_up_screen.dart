@@ -1,7 +1,11 @@
 import 'package:chat_concept/res/assets.dart';
+import 'package:chat_concept/stores/global_store.dart';
+import 'package:chat_concept/stores/signup_store.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppTextInput.dart';
 import 'package:flutter/material.dart';
+
+import '../../injection.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -11,6 +15,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final SignUpScreenStore _store = SignUpScreenStore();
+  final GlobalStore _globalStore = getIt<GlobalStore>();
+
+  @override
+  void dispose() {
+    _store.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -40,15 +53,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 ),
                 AppTextInput(
+                  _store.emailController,
                   hintText: 'Enter your email',
                 ),
                 AppTextInput(
+                  _store.passwordController,
                   hintText: 'Enter your password',
                 ),
                 AppTextInput(
+                  _store.ageController,
                   hintText: 'How old are you ?',
                 ),
                 AppTextInput(
+                  _store.bioController,
                   hintText: 'Whats interesting about you ? Any Hobbies ?',
                   isMultiLine: true,
                 ),
@@ -76,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                _globalStore.setPageIndex(1);
               },
               child: Text(
                 'Log In',
