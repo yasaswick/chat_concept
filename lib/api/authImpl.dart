@@ -48,4 +48,11 @@ class AuthImpl {
     print(result);
     return result;
   }
+
+  //get user profile from id
+  Future<UserView?> getProfileById(String id) async {
+    var result = await _api.getUserById(id);
+    print(result);
+    return result;
+  }
 }

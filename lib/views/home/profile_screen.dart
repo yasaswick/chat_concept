@@ -1,7 +1,10 @@
 import 'package:chat_concept/res/assets.dart';
+import 'package:chat_concept/res/constants.dart';
+
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/swagger/api.dart';
+import 'package:chat_concept/utils/time_ago.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,29 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppImage('https://source.unsplash.com/pJqfhKUpCh8/800x800')
+            AppImage(user.profilePhoto ?? AppConstants.PROFILE_PLACEHOLDER)
           ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                (user.chatMessages ?? 0).toString(),
-                style: TextStyle(
-                    color: AppColors.primary_color,
-                    fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                Assets.chat_icon,
-                height: 20,
-              )
-            ],
-          ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
@@ -120,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Text(
-            user.joinedDate ?? '',
+            getTimeAgo(user.joinedDate ?? '0'),
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),

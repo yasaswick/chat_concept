@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:ui';
+import 'package:chat_concept/api/authImpl.dart';
 import 'package:chat_concept/models/AppMessage.dart';
 import 'package:chat_concept/res/assets.dart';
+import 'package:chat_concept/res/constants.dart';
 import 'package:chat_concept/stores/main_screen_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/swagger/api.dart';
+import 'package:chat_concept/utils/time_ago.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +21,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  //Stoer
+  //Store
   final MainScreenStore _store = MainScreenStore();
+  //Auth implementation
+  final AuthImpl _auth = AuthImpl();
 
   @override
   void initState() {
@@ -36,42 +42,51 @@ class _MainScreenState extends State<MainScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
           backgroundColor: Colors.grey[50],
-          body: SafeArea(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Column(
-                children: [
-                  _buildHeaderSection(),
-                  if (_store.user.id != null)
-                    Expanded(
-                        child: StreamBuilder<List<AppMessage>>(
-                            stream: _store.socket.stream.dataFeedStream,
-                            builder: (context, snapshot) {
-                              if (snapshot.data != null) {
-                                return ListView.separated(
-                                  reverse: true,
-                                  separatorBuilder: (_, i) {
-                                    return SizedBox(height: 10);
-                                  },
-                                  itemBuilder: (_, i) {
-                                    var _chatData = snapshot.data![i];
-                                    if (_chatData.origin ==
-                                        _store.user.id.toString()) {
-                                      return _buildChatBubble(_chatData, true);
-                                    } else {
-                                      return _buildChatBubble(_chatData, false);
-                                    }
-                                  },
-                                  itemCount: snapshot.data!.length,
-                                );
-                              } else {
-                                return Container();
-                              }
-                            })),
-                  if (_store.user.id != null) _buildSendSection()
-                ],
+          body: Stack(
+            children: [
+              SafeArea(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                  child: Column(
+                    children: [
+                      if (_store.user.id != null)
+                        Expanded(
+                            child: Container(
+                          child: StreamBuilder<List<AppMessage>>(
+                              stream: _store.socket.stream.dataFeedStream,
+                              builder: (context, snapshot) {
+                                if (snapshot.data != null) {
+                                  return ListView.separated(
+                                    reverse: true,
+                                    separatorBuilder: (_, i) {
+                                      return SizedBox(height: 10);
+                                    },
+                                    itemBuilder: (_, i) {
+                                      var _chatData = snapshot.data![i];
+                                      if (_chatData.origin ==
+                                          _store.user.id.toString()) {
+                                        return _buildChatBubble(
+                                            _chatData, true);
+                                      } else {
+                                        return _buildChatBubble(
+                                            _chatData, false);
+                                      }
+                                    },
+                                    itemCount: snapshot.data!.length,
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }),
+                        )),
+                      if (_store.user.id != null) _buildSendSection()
+                    ],
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                  top: 0, left: 0, right: 0, child: _buildHeaderSection()),
+            ],
           )),
     );
   }
@@ -84,29 +99,29 @@ class _MainScreenState extends State<MainScreen> {
         if (!sent)
           IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () => _showUserProfile(),
+              onPressed: () {
+                if (message.origin != null) {
+                  _showUserProfile(message.origin!);
+                }
+              },
               icon: AppThumbImage(
-                message.photo ??
-                    'httpHos://source.unsplash.com/okVXy9tG3KY/800x800',
+                message.photo ?? '',
                 size: 30,
               )),
         Flexible(
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                gradient: AppColors.chat_reciever_gradient,
+                gradient: sent
+                    ? AppColors.chat_sender_gradient
+                    : AppColors.chat_reciever_gradient,
                 borderRadius: BorderRadius.circular(10)),
             child: Text(
               message.content ?? '',
               style: TextStyle(color: Colors.white),
-              textAlign: sent ? TextAlign.right : TextAlign.left,
             ),
           ),
         ),
-        SizedBox(
-          width: 30,
-          height: 30,
-        )
       ],
     );
   }
@@ -114,20 +129,34 @@ class _MainScreenState extends State<MainScreen> {
 //Header section
   Widget _buildHeaderSection() {
     return Container(
-      child: Row(
-        children: [
-          Expanded(
-              child: Text(
-            'Welcome',
-            style: Theme.of(context).textTheme.headline2,
-          )),
-          IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ProfileScreen())),
-              icon: AppThumbImage(
-                  'https://source.unsplash.com/okVXy9tG3KY/800x800'))
-        ],
+      child: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+          child: Container(
+            decoration:
+                BoxDecoration(color: Colors.grey.shade200.withOpacity(0.5)),
+            padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: MediaQuery.of(context).padding.top,
+                bottom: 10),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Text(
+                  'Welcome',
+                  style: Theme.of(context).textTheme.headline2,
+                )),
+                IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => ProfileScreen())),
+                    icon: AppThumbImage(_store.user.profilePhoto ??
+                        AppConstants.PROFILE_PLACEHOLDER))
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -136,6 +165,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildSendSection() {
     return Row(
       children: [
+        SizedBox(
+          width: 8,
+        ),
         Expanded(
             child: Container(
           decoration: BoxDecoration(
@@ -164,17 +196,18 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _showUserProfile() {
+  void _showUserProfile(String id) {
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (builder) {
           return Wrap(
             children: [
-              FutureBuilder(
-                  future: Future.delayed(Duration(seconds: 2)),
+              FutureBuilder<UserView?>(
+                  future: _auth.getProfileById(id),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
                       return Container(
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 50),
@@ -189,35 +222,13 @@ class _MainScreenState extends State<MainScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    AppImage(
-                                        'https://source.unsplash.com/pJqfhKUpCh8/800x800')
+                                    AppImage(snapshot.data!.profilePhoto ?? '')
                                   ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '10',
-                                        style: TextStyle(
-                                            color: AppColors.primary_color,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Image.asset(
-                                        Assets.chat_icon,
-                                        height: 20,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
                                   child: Text(
-                                    'Jane Doe',
+                                    snapshot.data!.name ?? '',
                                     style:
                                         Theme.of(context).textTheme.headline2,
                                   ),
@@ -225,7 +236,7 @@ class _MainScreenState extends State<MainScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10.0),
                                   child: Text(
-                                    'Aloha, my name is jane',
+                                    snapshot.data!.bio ?? '',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
@@ -233,7 +244,9 @@ class _MainScreenState extends State<MainScreen> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
                                   child: Text(
-                                    'Joined 5m ago',
+                                    'Joined ' +
+                                        getTimeAgo(
+                                            snapshot.data!.joinedDate ?? '0'),
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),

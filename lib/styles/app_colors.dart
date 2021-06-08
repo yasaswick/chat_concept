@@ -22,4 +22,11 @@ class AppColors {
     stops: [0.2, 1],
     colors: [Color(0xFF3f4c6b), Color(0xFF606c88)],
   );
+
+  static const LinearGradient chat_sender_gradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0.1, 1],
+    colors: [AppColors.primary_color, AppColors.primary_color],
+  );
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chat_concept/injection.dart';
 import 'package:chat_concept/models/AppMessage.dart';
+import 'package:chat_concept/res/constants.dart';
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/swagger/api.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,11 @@ abstract class _MainScreenStoreBase with Store {
     if (chatController.text.isNotEmpty) {
       var message = chatController.text;
       chatController.text = '';
-      socket.channel.sink.add(json.encode(AppMessage((user.id ?? 0).toString(),
-              'all', 'https://source.unsplash.com/pJqfhKUpCh8/800x800', message)
+      socket.channel.sink.add(json.encode(AppMessage(
+              (user.id ?? 0).toString(),
+              'all',
+              user.profilePhoto ?? AppConstants.PROFILE_PLACEHOLDER,
+              message)
           .toJson()));
     }
   }

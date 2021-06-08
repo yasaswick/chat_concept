@@ -72,6 +72,38 @@ class UserApi {
     }
   }
 
+  /// Get User By Id
+  ///
+  ///
+  Future<UserView?> getUserById(String id) async {
+    Object postBody = {};
+
+    // verify required params are set
+
+    // create path and map variables
+    var path = '/user/id/{id}'.replaceAll('{id}', id.toString());
+
+    print(path);
+    // query params
+    var queryParams = <QueryParam>[];
+    var headerParams = <String, String>{};
+    var formParams = <String, String>{};
+
+    var contentType = 'application/json';
+    List<String> authNames = [];
+
+    var response = await apiClient.invokeAPI(path, 'GET', queryParams, postBody,
+        headerParams, formParams, contentType, authNames);
+
+    if (response.statusCode >= 400) {
+      throw ApiException(response.statusCode, response.body);
+    } else if (response.body != null) {
+      return apiClient.deserialize(response.body, 'UserView') as UserView;
+    } else {
+      return null;
+    }
+  }
+
   /// Login User
   ///
   ///

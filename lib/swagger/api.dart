@@ -2,6 +2,7 @@ library swagger.api;
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:chat_concept/res/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
@@ -22,5 +23,4 @@ part 'model/user_view.dart';
 part 'model/user_view_private.dart';
 part 'model/validation_error.dart';
 
-ApiClient defaultApiClient =
-    ApiClient(basePath: 'https://chirp-yasas.herokuapp.com');
+ApiClient defaultApiClient = ApiClient(basePath: AppConstants.BASE_URL);
