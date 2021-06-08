@@ -13,7 +13,7 @@ class ChatDataController<T> {
 
   //Append chats to the end of the array
   void appendData(T value) {
-    data.add(value);
+    data.insert(0, value);
     _dataFeed.sink.add(data);
   }
 

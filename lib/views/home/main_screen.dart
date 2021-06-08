@@ -1,16 +1,12 @@
 import 'dart:convert';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chat_concept/api/authImpl.dart';
+import 'package:chat_concept/models/AppMessage.dart';
 import 'package:chat_concept/res/assets.dart';
-import 'package:chat_concept/stores/global_store.dart';
+import 'package:chat_concept/stores/main_screen_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
+import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-
-import '../../injection.dart';
 import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,13 +17,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final _globalStore = getIt<GlobalStore>();
-  final channel = WebSocketChannel.connect(
-    Uri.parse('ws://localhost:8000/ws/345345'),
-  );
+  //Stoer
+  final MainScreenStore _store = MainScreenStore();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   void dispose() {
-    channel.sink.close();
     super.dispose();
   }
 
@@ -43,24 +42,33 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 children: [
                   _buildHeaderSection(),
-                  Expanded(
-                      child: ListView.separated(
-                    reverse: true,
-                    separatorBuilder: (_, i) {
-                      return SizedBox(height: 10);
-                    },
-                    itemBuilder: (_, i) {
-                      return _buildChatBubble();
-                    },
-                    itemCount: 200,
-                  )),
-                  StreamBuilder(
-                    stream: channel.stream,
-                    builder: (context, snapshot) {
-                      return Text(snapshot.hasData ? '${snapshot.data}' : '');
-                    },
-                  ),
-                  _buildSendSection()
+                  if (_store.user.id != null)
+                    Expanded(
+                        child: StreamBuilder<List<AppMessage>>(
+                            stream: _store.socket.stream.dataFeedStream,
+                            builder: (context, snapshot) {
+                              if (snapshot.data != null) {
+                                return ListView.separated(
+                                  reverse: true,
+                                  separatorBuilder: (_, i) {
+                                    return SizedBox(height: 10);
+                                  },
+                                  itemBuilder: (_, i) {
+                                    var _chatData = snapshot.data![i];
+                                    if (_chatData.origin ==
+                                        _store.user.id.toString()) {
+                                      return _buildChatBubble(_chatData, true);
+                                    } else {
+                                      return _buildChatBubble(_chatData, false);
+                                    }
+                                  },
+                                  itemCount: snapshot.data!.length,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            })),
+                  if (_store.user.id != null) _buildSendSection()
                 ],
               ),
             ),
@@ -69,25 +77,29 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 //Chat bubble
-  Widget _buildChatBubble() {
+  Widget _buildChatBubble(AppMessage message, bool sent) {
     return Row(
+      mainAxisAlignment: sent ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
-        IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: () => _showUserProfile(),
-            icon: AppThumbImage(
-              'https://source.unsplash.com/pJqfhKUpCh8/800x800',
-              size: 30,
-            )),
-        Expanded(
+        if (!sent)
+          IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () => _showUserProfile(),
+              icon: AppThumbImage(
+                message.photo ??
+                    'httpHos://source.unsplash.com/okVXy9tG3KY/800x800',
+                size: 30,
+              )),
+        Flexible(
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 gradient: AppColors.chat_reciever_gradient,
                 borderRadius: BorderRadius.circular(10)),
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin finibus lectus et eros feugiat, a maximus massa aliquam. ',
+              message.content ?? '',
               style: TextStyle(color: Colors.white),
+              textAlign: sent ? TextAlign.right : TextAlign.left,
             ),
           ),
         ),
@@ -114,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (_) => ProfileScreen())),
               icon: AppThumbImage(
-                  'https://source.unsplash.com/pJqfhKUpCh8/800x800'))
+                  'https://source.unsplash.com/okVXy9tG3KY/800x800'))
         ],
       ),
     );
@@ -132,6 +144,7 @@ class _MainScreenState extends State<MainScreen> {
           child: TextField(
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            controller: _store.chatController,
             decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -142,7 +155,11 @@ class _MainScreenState extends State<MainScreen> {
         SizedBox(
           width: 8,
         ),
-        IconButton(onPressed: () async {}, icon: Image.asset(Assets.send_icon))
+        IconButton(
+            onPressed: () async {
+              _store.sendChatMessage();
+            },
+            icon: Image.asset(Assets.send_icon))
       ],
     );
   }
