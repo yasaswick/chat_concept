@@ -31,10 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
           child: Column(
             children: [
+              SizedBox(
+                height: 30,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -91,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     }
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(Duration(milliseconds: 1500), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => MainWrapper()));
     });

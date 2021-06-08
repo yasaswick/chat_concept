@@ -22,6 +22,10 @@ abstract class _SignUpScreenStoreBase with Store {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
 
+  //Selected image
+  @observable
+  Uri? selectedImage;
+
   //Loading indicator flag
   @observable
   bool isLoading = false;
@@ -30,14 +34,19 @@ abstract class _SignUpScreenStoreBase with Store {
   void setisLoading(bool value) => isLoading = value;
 
   @action
+  void setImage(Uri? value) => selectedImage = value;
+
+  @action
   Future registerUser() async {
-    if (ageController.text.isNotEmpty) {
+    if (ageController.text.isNotEmpty && selectedImage != null) {
       isLoading = true;
       await _auth
           .register(nameController.text, emailController.text,
               passwordController.text, ageController.text, bioController.text)
-          .then((value) {
-        _globalStore.setCurrentUser(value);
+          .then((value) async {
+        await _auth.updloadProfilePic(selectedImage).then((value) {
+          _globalStore.setCurrentUser(value);
+        }).catchError((e) {});
       }).catchError((e) {});
       isLoading = false;
     }

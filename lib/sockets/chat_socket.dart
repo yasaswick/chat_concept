@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:chat_concept/bloc/chat_data_controller.dart';
 import 'package:chat_concept/models/AppMessage.dart';
+import 'package:chat_concept/res/constants.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatSocket {
@@ -14,8 +15,7 @@ class ChatSocket {
 
   ChatSocket(String userId) {
     channel = WebSocketChannel.connect(
-      // Uri.parse('wss://chirp-yasas.herokuapp.com/ws/$userId'),
-      Uri.parse('ws://localhost:8000/ws/$userId'),
+      Uri.parse(AppConstants.CHAT_SOCKET + '/ws/$userId'),
     );
     init();
   }

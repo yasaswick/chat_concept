@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/stores/global_store.dart';
 import 'package:chat_concept/stores/signup_store.dart';
@@ -19,8 +21,11 @@ class SignUpScreen extends StatefulWidget {
 enum Options { camera, gallery }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final SignUpScreenStore _store = SignUpScreenStore();
+  //Global Store
   final GlobalStore _globalStore = getIt<GlobalStore>();
+
+  //Stores
+  final SignUpScreenStore _store = SignUpScreenStore();
 
   @override
   void dispose() {
@@ -53,11 +58,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     GestureDetector(
                       onTap: () async {
                         var image = await DeviceUtils.pickFromGallery();
+                        _store.setImage(image);
                       },
-                      child: Image.asset(
-                        Assets.upload_image,
-                        height: 150,
-                      ),
+                      child: Observer(builder: (_) {
+                        if (_store.selectedImage != null) {
+                          return Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: FileImage(
+                                        File(_store.selectedImage!.path)))),
+                          );
+                        } else {
+                          return Image.asset(
+                            Assets.upload_image,
+                            height: 150,
+                          );
+                        }
+                      }),
                     ),
                   ],
                 ),

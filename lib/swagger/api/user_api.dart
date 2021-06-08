@@ -83,7 +83,6 @@ class UserApi {
     // create path and map variables
     var path = '/user/id/{id}'.replaceAll('{id}', id.toString());
 
-    print(path);
     // query params
     var queryParams = <QueryParam>[];
     var headerParams = <String, String>{};
@@ -145,7 +144,7 @@ class UserApi {
   /// Upload Profile Image
   ///
   ///
-  Future<Object?> uploadProfileImageUserProfileImagePost(
+  Future<UserViewPrivate?> uploadProfileImageUserProfileImagePost(
       http.MultipartFile? file) async {
     Object? postBody = {};
 
@@ -164,18 +163,19 @@ class UserApi {
 
     var contentTypes = <String>['multipart/form-data'];
 
-    var contentType =
-        contentTypes.isNotEmpty ? contentTypes[0] : 'application/json';
+    var contentType = 'multipart/form-data';
     var authNames = <String>['Authorization'];
 
     if (contentType.startsWith('multipart/form-data')) {
       var hasFields = false;
-      var mp = http.MultipartRequest('', Uri());
+      var mp = http.MultipartRequest('POST', Uri.parse('/user/profile_image'));
       hasFields = true;
       mp.fields['file'] = file.field;
       mp.files.add(file);
       if (hasFields) postBody = mp;
-    } else {}
+    } else {
+      print('null??');
+    }
 
     var response = await apiClient.invokeAPI(path, 'POST', queryParams,
         postBody, headerParams, formParams, contentType, authNames);
@@ -183,7 +183,8 @@ class UserApi {
     if (response.statusCode >= 400) {
       throw ApiException(response.statusCode, response.body);
     } else if (response.body != null) {
-      return apiClient.deserialize(response.body, 'Object') as Object;
+      return apiClient.deserialize(response.body, 'UserViewPrivate')
+          as UserViewPrivate;
     } else {
       return null;
     }

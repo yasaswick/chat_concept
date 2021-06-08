@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:chat_concept/api/authImpl.dart';
 import 'package:chat_concept/models/AppMessage.dart';
@@ -8,6 +7,7 @@ import 'package:chat_concept/stores/main_screen_store.dart';
 import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/utils/time_ago.dart';
+import 'package:chat_concept/views/home/search_delegate.dart';
 import 'package:chat_concept/widgets/AppImage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +53,7 @@ class _MainScreenState extends State<MainScreen> {
                         Expanded(
                             child: Container(
                           child: StreamBuilder<List<AppMessage>>(
+                              initialData: [],
                               stream: _store.socket.stream.dataFeedStream,
                               builder: (context, snapshot) {
                                 if (snapshot.data != null) {
@@ -65,10 +66,9 @@ class _MainScreenState extends State<MainScreen> {
                                       var _chatData = snapshot.data![i];
                                       if (_chatData.origin ==
                                           _store.user.id.toString()) {
-                                        return _buildChatBubble(
-                                            _chatData, true);
+                                        return buildChatBubble(_chatData, true);
                                       } else {
-                                        return _buildChatBubble(
+                                        return buildChatBubble(
                                             _chatData, false);
                                       }
                                     },
@@ -92,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
 //Chat bubble
-  Widget _buildChatBubble(AppMessage message, bool sent) {
+  Widget buildChatBubble(AppMessage message, bool sent) {
     return Row(
       mainAxisAlignment: sent ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
@@ -142,17 +142,31 @@ class _MainScreenState extends State<MainScreen> {
                 bottom: 10),
             child: Row(
               children: [
-                Expanded(
-                    child: Text(
-                  'Welcome',
-                  style: Theme.of(context).textTheme.headline2,
-                )),
                 IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: () => Navigator.push(context,
                         MaterialPageRoute(builder: (_) => ProfileScreen())),
                     icon: AppThumbImage(_store.user.profilePhoto ??
-                        AppConstants.PROFILE_PLACEHOLDER))
+                        AppConstants.PROFILE_PLACEHOLDER)),
+                Expanded(
+                    child: Text(
+                  'Chirp',
+                  style: Theme.of(context).textTheme.headline2,
+                  textAlign: TextAlign.center,
+                )),
+                IconButton(
+                    icon: Icon(
+                      CupertinoIcons.search,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      showSearch(
+                          context: context, delegate: MessageSearch(_store));
+                      //  Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (_) => SearchScreen(_store)));
+                    }),
               ],
             ),
           ),

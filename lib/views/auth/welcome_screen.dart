@@ -22,9 +22,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,13 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ],
               ),
               SizedBox(
-                height: 20,
-              ),
-              AppButton(
-                text: 'LET\'S GET STARTED',
-                onTap: () {
-                  _globalStore.setPageIndex(1);
-                },
+                height: 30,
               )
             ],
           ),

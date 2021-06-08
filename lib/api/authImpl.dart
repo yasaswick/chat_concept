@@ -2,6 +2,7 @@ import 'package:chat_concept/res/constants.dart';
 import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/res/preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 //Authentication handling class
 class AuthImpl {
@@ -38,8 +39,12 @@ class AuthImpl {
   }
 
   //upload profile pic method
-  Future updloadProfilePic(String image) async {
-    print('');
+  Future<UserViewPrivate?> updloadProfilePic(Uri? imageFile) async {
+    if (imageFile != null) {
+      var image = await http.MultipartFile.fromPath('file', imageFile.path);
+      var result = await _api.uploadProfileImageUserProfileImagePost(image);
+      return result;
+    }
   }
 
   //get user profile from token

@@ -30,8 +30,8 @@ class DeviceUtils {
     final _picker = ImagePicker();
     var pickedFile = await _picker.getImage(
       source: ImageSource.camera,
-      maxWidth: 1200,
-      maxHeight: 1200,
+      maxWidth: 800,
+      maxHeight: 800,
     );
 
     Uri? croppedImage;
@@ -47,15 +47,13 @@ class DeviceUtils {
       sourcePath: filePath,
       iosUiSettings: IOSUiSettings(
           aspectRatioLockEnabled: true,
-          rectWidth: 1080,
-          rectHeight: 1080,
-          rectX: 1080,
-          rectY: 1080),
+          rectWidth: 800,
+          rectHeight: 800,
+          rectX: 800,
+          rectY: 800),
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
       ],
-      maxWidth: 1080,
-      maxHeight: 1080,
     );
     Uri? photoUri;
     if (croppedImage != null) {

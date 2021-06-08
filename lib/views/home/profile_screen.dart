@@ -1,8 +1,5 @@
-import 'package:chat_concept/res/assets.dart';
 import 'package:chat_concept/res/constants.dart';
-
 import 'package:chat_concept/stores/global_store.dart';
-import 'package:chat_concept/styles/app_colors.dart';
 import 'package:chat_concept/swagger/api.dart';
 import 'package:chat_concept/utils/time_ago.dart';
 import 'package:chat_concept/widgets/AppButton.dart';
