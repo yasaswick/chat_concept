@@ -16,7 +16,7 @@ abstract class _GlobalStoreBase with Store {
   int bottomNavBarIndex = 0;
 
   @observable
-  int pageIndex = 0;
+  int pageIndex = 1;
 
   @observable
   UserView? currentUser;

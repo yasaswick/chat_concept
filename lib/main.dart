@@ -1,12 +1,6 @@
 import 'package:chat_concept/styles/app_themes.dart';
-import 'package:chat_concept/views/auth/login_screen.dart';
-import 'package:chat_concept/views/auth/sign_up_screen.dart';
-import 'package:chat_concept/views/auth/welcome_screen.dart';
-import 'package:chat_concept/views/home/main_screen.dart';
-import 'package:chat_concept/views/home/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'injection.dart';
 import 'views/common/splash_screen.dart';
 

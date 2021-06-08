@@ -17,8 +17,6 @@ class MainWrapper extends StatelessWidget {
     return Observer(builder: (_) {
       if (_globalStore.currentUser == null) {
         switch (_globalStore.pageIndex) {
-          case 0:
-            return WelcomeScreen();
           case 1:
             return LoginScreen();
           case 2:
