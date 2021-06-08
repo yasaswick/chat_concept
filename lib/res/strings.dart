@@ -1,0 +1,3 @@
+///App Strings
+
+class Strings {}
